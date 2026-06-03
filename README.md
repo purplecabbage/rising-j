@@ -1,7 +1,7 @@
-# Next.js + Contentlayer
+# rising-j
 
-A template with Next.js 13 app dir, Contentlayer, Tailwind CSS and dark mode.
+A Next.js app with Supabase, Contentlayer, Tailwind CSS and dark mode.
 
-https://next-contentlayer.vercel.app
+https://rising-j.vercel.app
 
 

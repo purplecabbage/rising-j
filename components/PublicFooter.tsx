@@ -7,8 +7,11 @@ import Footer from "@/components/footer"
 export default function PublicFooter() {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith("/admin") || pathname.startsWith("/auth")
+  const isCollab = pathname.startsWith("/collab")
 
   if (isAdmin) return null
+
+  if (isCollab) return <Footer />
 
   return (
     <>

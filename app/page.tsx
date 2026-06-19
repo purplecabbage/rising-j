@@ -25,7 +25,7 @@ export default async function Home() {
       <article className="py-12 min-w-full px-5 sm:px-20 bg-fixed bg-center"
       style={{  
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        backgroundImage: post?.cover_image ? `url(${post.cover_image})` : 'none',
+        backgroundImage: post?.cover_image ? `url(${post.cover_image})` : 'url(/RisingJ-bg.png)',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
@@ -59,13 +59,14 @@ export default async function Home() {
               {song.description}
             </p>
           )}
-          <StreamLinks 
+          <StreamLinks
             title={song.title}
             appleMusicLink={song.apple_music_link || undefined}
             spotifyLink={song.spotify_link || undefined}
             amazonMusicLink={song.amazon_music_link || undefined}
             streamUrl={song.stream_url || undefined}
             discoTrackId={song.disco_track_id || undefined}
+            audioFile={song.audio_file || undefined}
           />
         </article>
       )}

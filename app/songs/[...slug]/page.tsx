@@ -45,19 +45,27 @@ export default async function SongPage({ params }: SongProps) {
 
   return (
     <article className="py-20 prose dark:prose-invert min-w-full px-5 sm:px-20">
+      {song.cover_image && (
+        <img
+          src={song.cover_image}
+          alt={song.title}
+          className="w-64 sm:w-80 rounded-lg shadow-lg mx-auto mb-6 not-prose"
+        />
+      )}
       <h1 className="mb-2">{song.title}</h1>
       {song.description && (
         <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
           {song.description}
         </p>
       )}
-      <StreamLinks 
+      <StreamLinks
         title={song.title}
         appleMusicLink={song.apple_music_link || undefined}
         spotifyLink={song.spotify_link || undefined}
         amazonMusicLink={song.amazon_music_link || undefined}
         streamUrl={song.stream_url || undefined}
         discoTrackId={song.disco_track_id || undefined}
+        audioFile={song.audio_file || undefined}
       />
     </article>
   )

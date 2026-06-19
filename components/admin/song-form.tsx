@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ImageUpload } from "@/components/admin/ImageUpload"
+import { AudioUpload } from "@/components/admin/AudioUpload"
 import type { Song } from "@/lib/types"
 
 interface SongFormProps {
@@ -30,6 +31,7 @@ export function SongForm({ song }: SongFormProps) {
     amazon_music_link: song?.amazon_music_link ?? "",
     stream_url: song?.stream_url ?? "",
     disco_track_id: song?.disco_track_id ?? "",
+    audio_file: song?.audio_file ?? "",
     published_at: song?.published_at 
       ? new Date(song.published_at).toISOString().slice(0, 16)
       : new Date().toISOString().slice(0, 16),
@@ -139,6 +141,11 @@ export function SongForm({ song }: SongFormProps) {
           <ImageUpload
             value={formData.cover_image}
             onChange={(url) => setFormData({ ...formData, cover_image: url })}
+          />
+
+          <AudioUpload
+            value={formData.audio_file}
+            onChange={(url) => setFormData({ ...formData, audio_file: url })}
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

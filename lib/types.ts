@@ -33,6 +33,7 @@ export interface Song {
   amazon_music_link: string | null
   stream_url: string | null
   disco_track_id: string | null
+  audio_file: string | null
   created_at: string
   updated_at: string
 }

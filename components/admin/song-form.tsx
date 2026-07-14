@@ -32,6 +32,7 @@ export function SongForm({ song }: SongFormProps) {
     stream_url: song?.stream_url ?? "",
     disco_track_id: song?.disco_track_id ?? "",
     audio_file: song?.audio_file ?? "",
+    waveform_peaks: song?.waveform_peaks ?? null,
     published_at: song?.published_at 
       ? new Date(song.published_at).toISOString().slice(0, 16)
       : new Date().toISOString().slice(0, 16),
@@ -145,7 +146,8 @@ export function SongForm({ song }: SongFormProps) {
 
           <AudioUpload
             value={formData.audio_file}
-            onChange={(url) => setFormData({ ...formData, audio_file: url })}
+            onChange={(url) => setFormData((prev) => ({ ...prev, audio_file: url }))}
+            onPeaksChange={(peaks) => setFormData((prev) => ({ ...prev, waveform_peaks: peaks }))}
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

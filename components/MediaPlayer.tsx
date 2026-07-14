@@ -5,6 +5,7 @@ import { useRef, useState, useEffect, useMemo } from "react"
 interface MediaPlayerProps {
   src: string
   title?: string
+  initialPeaks?: number[] | null
 }
 
 // Decode once at high resolution, downsample for display
@@ -15,7 +16,7 @@ function barsForWidth(w: number) {
   return Math.max(60, Math.min(200, Math.round((w * 150) / 800)))
 }
 
-export default function MediaPlayer({ src, title }: MediaPlayerProps) {
+export default function MediaPlayer({ src, title, initialPeaks }: MediaPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -24,7 +25,9 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(0.5)
-  const [rawPeaks, setRawPeaks] = useState<Float32Array | null>(null)
+  const [rawPeaks, setRawPeaks] = useState<Float32Array | null>(
+    initialPeaks ? new Float32Array(initialPeaks) : null
+  )
   const [waveformError, setWaveformError] = useState(false)
   const [bars, setBars] = useState(150)
   const [canvasWidth, setCanvasWidth] = useState(800)
@@ -54,8 +57,9 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
   }, [])
 
   // Fetch + decode audio → high-res RMS peaks, cached in sessionStorage
+  // Skip entirely if pre-computed peaks were passed in from the database
   useEffect(() => {
-    if (!src) return
+    if (!src || initialPeaks) return
     let cancelled = false
 
     ;(async () => {

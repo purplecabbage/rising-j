@@ -9,6 +9,7 @@ interface StreamLinksProps {
   streamUrl?: string
   discoTrackId?: string
   audioFile?: string
+  waveformPeaks?: number[] | null
 }
 
 export default function StreamLinks({
@@ -19,6 +20,7 @@ export default function StreamLinks({
   streamUrl,
   discoTrackId,
   audioFile,
+  waveformPeaks,
 }: StreamLinksProps) {
   const hasLinks = appleMusicLink || spotifyLink || amazonMusicLink
   const hasPlayer = audioFile || (streamUrl && discoTrackId)
@@ -26,7 +28,7 @@ export default function StreamLinks({
   return (
     <section className="py-8 space-y-8 not-prose">
       {audioFile && (
-        <MediaPlayer src={audioFile} title={title} />
+        <MediaPlayer src={audioFile} title={title} initialPeaks={waveformPeaks} />
       )}
 
       {!audioFile && streamUrl && discoTrackId && (

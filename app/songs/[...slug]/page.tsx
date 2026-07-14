@@ -94,6 +94,7 @@ export default async function SongPage({ params }: SongProps) {
             streamUrl={song.stream_url || undefined}
             discoTrackId={song.disco_track_id || undefined}
             audioFile={song.audio_file || undefined}
+            waveformPeaks={song.waveform_peaks}
           />
         </div>
       </article>

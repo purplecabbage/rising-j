@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import ReactMarkdown from "react-markdown"
+import MarkdownContent from "@/components/MarkdownContent"
 import StreamLinks from "@/components/StreamLinks"
 import { getSongBySlug } from "@/lib/data"
 
@@ -79,14 +79,15 @@ export default async function SongPage({ params }: SongProps) {
         <div className="rounded-xl bg-white/15 dark:bg-black/30 backdrop-blur-md border border-white/20 px-6 py-5 mb-4 shadow-lg">
           <h1 className="text-3xl font-bold text-white mb-2 text-balance">{song.title}</h1>
           {song.description && (
-            <div className="prose prose-invert prose-lg max-w-none
-              prose-p:text-white/85 prose-p:leading-relaxed prose-p:my-2
-              prose-headings:text-white prose-strong:text-white
-              prose-em:text-white/90 prose-a:text-blue-300 prose-a:no-underline hover:prose-a:underline
-              prose-ul:text-white/85 prose-ol:text-white/85 prose-li:my-0.5
-              prose-hr:border-white/20">
-              <ReactMarkdown>{song.description}</ReactMarkdown>
-            </div>
+            <MarkdownContent
+              content={song.description}
+              className="prose prose-invert prose-lg max-w-none
+                prose-p:text-white/85 prose-p:leading-relaxed prose-p:my-2
+                prose-headings:text-white prose-strong:text-white
+                prose-em:text-white/90 prose-a:text-blue-300 prose-a:no-underline hover:prose-a:underline
+                prose-ul:text-white/85 prose-ol:text-white/85 prose-li:my-0.5
+                prose-hr:border-white/20"
+            />
           )}
         </div>
 

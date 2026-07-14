@@ -5,6 +5,7 @@ import { useRef, useState, useEffect, useMemo } from "react"
 interface MediaPlayerProps {
   src: string
   title?: string
+  initialPeaks?: number[] | null
 }
 
 // Decode once at high resolution, downsample for display
@@ -15,7 +16,7 @@ function barsForWidth(w: number) {
   return Math.max(60, Math.min(200, Math.round((w * 150) / 800)))
 }
 
-export default function MediaPlayer({ src, title }: MediaPlayerProps) {
+export default function MediaPlayer({ src, title, initialPeaks }: MediaPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -24,7 +25,9 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(0.5)
-  const [rawPeaks, setRawPeaks] = useState<Float32Array | null>(null)
+  const [rawPeaks, setRawPeaks] = useState<Float32Array | null>(
+    initialPeaks ? new Float32Array(initialPeaks) : null
+  )
   const [waveformError, setWaveformError] = useState(false)
   const [bars, setBars] = useState(150)
   const [canvasWidth, setCanvasWidth] = useState(800)
@@ -53,14 +56,26 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
     return () => observer.disconnect()
   }, [])
 
-  // Fetch + decode audio → high-res RMS peaks
+  // Fetch + decode audio → high-res RMS peaks, cached in sessionStorage
+  // Skip entirely if pre-computed peaks were passed in from the database
   useEffect(() => {
-    if (!src) return
+    if (!src || initialPeaks) return
     let cancelled = false
 
     ;(async () => {
       try {
-        const buf = await fetch(src).then((r) => r.arrayBuffer())
+        // Check sessionStorage cache first — peaks never change for a given track
+        const cacheKey = `waveform:${src}`
+        const cached = sessionStorage.getItem(cacheKey)
+        if (cached) {
+          const arr = JSON.parse(cached) as number[]
+          if (!cancelled) setRawPeaks(new Float32Array(arr))
+          return
+        }
+
+        // Route through server-side proxy to avoid CORS issues with cross-origin audio files
+        const proxiedUrl = `/api/audio-proxy?url=${encodeURIComponent(src)}`
+        const buf = await fetch(proxiedUrl).then((r) => r.arrayBuffer())
         if (cancelled) return
 
         const actx = new AudioContext()
@@ -82,7 +97,14 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
         for (let i = 0; i < p.length; i++) if (p[i] > max) max = p[i]
         if (max > 0) for (let i = 0; i < p.length; i++) p[i] /= max
 
-        setRawPeaks(p)
+        // Persist to sessionStorage as a plain number array
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify(Array.from(p)))
+        } catch {
+          // sessionStorage may be full or unavailable — not fatal
+        }
+
+        if (!cancelled) setRawPeaks(p)
       } catch {
         if (!cancelled) setWaveformError(true)
       }

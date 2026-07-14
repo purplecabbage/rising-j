@@ -34,6 +34,7 @@ export interface Song {
   stream_url: string | null
   disco_track_id: string | null
   audio_file: string | null
+  waveform_peaks: number[] | null
   created_at: string
   updated_at: string
 }

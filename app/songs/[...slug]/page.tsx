@@ -44,29 +44,59 @@ export default async function SongPage({ params }: SongProps) {
   }
 
   return (
-    <article className="py-20 prose dark:prose-invert min-w-full px-5 sm:px-20">
+    <div className="relative min-h-screen">
+      {/* Blurred album art background */}
       {song.cover_image && (
-        <img
-          src={song.cover_image}
-          alt={song.title}
-          className="w-64 sm:w-80 rounded-lg shadow-lg mx-auto mb-6 not-prose"
-        />
+        <div
+          className="fixed inset-0 -z-10"
+          aria-hidden="true"
+        >
+          <img
+            src={song.cover_image}
+            alt=""
+            className="w-full h-full object-cover scale-110"
+            style={{ filter: "blur(32px)" }}
+          />
+          {/* Dark overlay to improve readability */}
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
       )}
-      <h1 className="mb-2">{song.title}</h1>
-      {song.description && (
-        <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
-          {song.description}
-        </p>
-      )}
-      <StreamLinks
-        title={song.title}
-        appleMusicLink={song.apple_music_link || undefined}
-        spotifyLink={song.spotify_link || undefined}
-        amazonMusicLink={song.amazon_music_link || undefined}
-        streamUrl={song.stream_url || undefined}
-        discoTrackId={song.disco_track_id || undefined}
-        audioFile={song.audio_file || undefined}
-      />
-    </article>
+
+      <article className="py-20 min-w-full px-5 sm:px-20 max-w-3xl mx-auto">
+        {/* Album art card */}
+        {song.cover_image && (
+          <div className="flex justify-center mb-8">
+            <img
+              src={song.cover_image}
+              alt={song.title}
+              className="w-64 sm:w-80 rounded-xl shadow-2xl"
+            />
+          </div>
+        )}
+
+        {/* Title & description */}
+        <div className="rounded-xl bg-white/15 dark:bg-black/30 backdrop-blur-md border border-white/20 px-6 py-5 mb-4 shadow-lg">
+          <h1 className="text-3xl font-bold text-white mb-2 text-balance">{song.title}</h1>
+          {song.description && (
+            <p className="text-lg text-white/85 leading-relaxed">
+              {song.description}
+            </p>
+          )}
+        </div>
+
+        {/* Streaming links */}
+        <div className="rounded-xl bg-white/15 dark:bg-black/30 backdrop-blur-md border border-white/20 px-6 shadow-lg">
+          <StreamLinks
+            title={song.title}
+            appleMusicLink={song.apple_music_link || undefined}
+            spotifyLink={song.spotify_link || undefined}
+            amazonMusicLink={song.amazon_music_link || undefined}
+            streamUrl={song.stream_url || undefined}
+            discoTrackId={song.disco_track_id || undefined}
+            audioFile={song.audio_file || undefined}
+          />
+        </div>
+      </article>
+    </div>
   )
 }

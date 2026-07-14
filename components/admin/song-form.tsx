@@ -130,12 +130,14 @@ export function SongForm({ song }: SongFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Description (Markdown supported)</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              rows={2}
+              rows={6}
+              placeholder="Supports **bold**, *italic*, [links](https://...), and newlines"
+              className="font-mono text-sm"
             />
           </div>
 

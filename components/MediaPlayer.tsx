@@ -53,13 +53,22 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
     return () => observer.disconnect()
   }, [])
 
-  // Fetch + decode audio → high-res RMS peaks
+  // Fetch + decode audio → high-res RMS peaks, cached in sessionStorage
   useEffect(() => {
     if (!src) return
     let cancelled = false
 
     ;(async () => {
       try {
+        // Check sessionStorage cache first — peaks never change for a given track
+        const cacheKey = `waveform:${src}`
+        const cached = sessionStorage.getItem(cacheKey)
+        if (cached) {
+          const arr = JSON.parse(cached) as number[]
+          if (!cancelled) setRawPeaks(new Float32Array(arr))
+          return
+        }
+
         // Route through server-side proxy to avoid CORS issues with cross-origin audio files
         const proxiedUrl = `/api/audio-proxy?url=${encodeURIComponent(src)}`
         const buf = await fetch(proxiedUrl).then((r) => r.arrayBuffer())
@@ -84,7 +93,14 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
         for (let i = 0; i < p.length; i++) if (p[i] > max) max = p[i]
         if (max > 0) for (let i = 0; i < p.length; i++) p[i] /= max
 
-        setRawPeaks(p)
+        // Persist to sessionStorage as a plain number array
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify(Array.from(p)))
+        } catch {
+          // sessionStorage may be full or unavailable — not fatal
+        }
+
+        if (!cancelled) setRawPeaks(p)
       } catch {
         if (!cancelled) setWaveformError(true)
       }

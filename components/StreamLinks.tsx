@@ -45,42 +45,42 @@ export default function StreamLinks({
         <div className="flex flex-col sm:flex-row flex-wrap gap-3">
           {appleMusicLink && (
             <Link
-              className="flex items-center gap-3 bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors no-underline"
+              className="flex items-center gap-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-lg transition-colors no-underline"
               target="_blank"
               href={appleMusicLink}
             >
               <AppleMusicIcon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-medium text-gray-900 dark:text-white text-sm">Apple Music</span>
-              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-gray-400" />
+              <span className="font-medium text-white text-sm">Apple Music</span>
+              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-white/60" />
             </Link>
           )}
           {spotifyLink && (
             <Link
-              className="flex items-center gap-3 bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors no-underline"
+              className="flex items-center gap-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-lg transition-colors no-underline"
               target="_blank"
               href={spotifyLink}
             >
               <SpotifyIcon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-medium text-gray-900 dark:text-white text-sm">Spotify</span>
-              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-gray-400" />
+              <span className="font-medium text-white text-sm">Spotify</span>
+              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-white/60" />
             </Link>
           )}
           {amazonMusicLink && (
             <Link
-              className="flex items-center gap-3 bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors no-underline"
+              className="flex items-center gap-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-lg transition-colors no-underline"
               target="_blank"
               href={amazonMusicLink}
             >
               <AmazonMusicIcon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-medium text-gray-900 dark:text-white text-sm">Amazon Music</span>
-              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-gray-400" />
+              <span className="font-medium text-white text-sm">Amazon Music</span>
+              <ExternalLinkIcon className="w-3.5 h-3.5 ml-1 text-white/60" />
             </Link>
           )}
         </div>
       )}
 
       {!hasPlayer && !hasLinks && (
-        <p className="text-gray-500 text-sm">No streaming links available yet.</p>
+        <p className="text-white/60 text-sm">No streaming links available yet.</p>
       )}
     </section>
   )

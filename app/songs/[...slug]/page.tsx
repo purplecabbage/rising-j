@@ -54,8 +54,8 @@ export default async function SongPage({ params }: SongProps) {
           <img
             src={song.cover_image}
             alt=""
-            className="w-full h-full object-cover scale-110"
-            style={{ filter: "blur(32px)" }}
+            className="w-full h-full object-cover scale-100"
+            style={{ filter: "blur(3px)" }}
           />
           {/* Dark overlay to improve readability */}
           <div className="absolute inset-0 bg-black/40" />
@@ -69,7 +69,7 @@ export default async function SongPage({ params }: SongProps) {
             <img
               src={song.cover_image}
               alt={song.title}
-              className="w-64 sm:w-80 rounded-xl shadow-2xl"
+              className="w-72 sm:w-[28rem] rounded-xl shadow-2xl"
             />
           </div>
         )}

@@ -60,7 +60,9 @@ export default function MediaPlayer({ src, title }: MediaPlayerProps) {
 
     ;(async () => {
       try {
-        const buf = await fetch(src).then((r) => r.arrayBuffer())
+        // Route through server-side proxy to avoid CORS issues with cross-origin audio files
+        const proxiedUrl = `/api/audio-proxy?url=${encodeURIComponent(src)}`
+        const buf = await fetch(proxiedUrl).then((r) => r.arrayBuffer())
         if (cancelled) return
 
         const actx = new AudioContext()
